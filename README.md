@@ -82,11 +82,6 @@ systems/IncidentAutoRemediationAgent/
     data/                        # created at runtime: *.db, infra_state.json (gitignored)
 ```
 
-Internal imports are rooted at this folder (`from storage import ...`,
-`from shared.models import ...`), and there's a local `common/` copy of the
-Gemini client wrapper — this folder has no dependency on anything outside
-itself, so it runs the same way whether it's part of a larger checkout or
-its own standalone repo.
 
 ## Answering the open design questions
 
@@ -238,7 +233,7 @@ sequenceDiagram
     CmdExec->>Gemini: generate_content(action_extraction_prompt) -> ActionRequest
     alt action_type == "unrecognized"
         CmdExec-->>Engineer: None (chat falls through to Q&A; tag comment is left alone)
-    else recognized action
+    else recognized-action
         CmdExec->>Tools: dispatch(request)
         Tools->>State: get_resource(service) / update_resource(...) / set_feature_flag(...)
         State-->>Tools: before / after state
@@ -266,8 +261,7 @@ stable `(service, title)` fingerprint across runs.
 
 ## Known simplifications
 
-1. **Single-process, single JSON file for infra_state** — no real K8s/AWS
-   API, no concurrent-write handling beyond a single Python process.
+1. **Single-process, single JSON file for infra_state** 
 2. **Subagents are single-shot summarizers, not a ReAct loop** — each makes
    exactly one LLM call over pre-fetched data, rather than iteratively
    deciding what to query. A full triage uses ~4 of the 20-call budget as a
