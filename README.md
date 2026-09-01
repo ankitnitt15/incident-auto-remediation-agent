@@ -231,9 +231,8 @@ sequenceDiagram
     end
 
     CmdExec->>Gemini: generate_content(action_extraction_prompt) -> ActionRequest
-
     alt Unrecognized action
-        CmdExec-->>Engineer: None - chat falls through to Q&A; tag comment is left alone
+        CmdExec-->>Engineer: None - chat falls through to Q&A, tag comment is left alone
     else Recognized action
         CmdExec-->>Engineer: Execute recognized action
         CmdExec->>Tools: dispatch(request)
