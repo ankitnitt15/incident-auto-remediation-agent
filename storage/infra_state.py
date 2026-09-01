@@ -2,8 +2,7 @@
 that the Command Executor's MCP-style tools act on. A resource (a service or
 a database name) maps to whatever attributes apply to it -- replica_count /
 deployed_version / feature_flags for services, connection_pool_size for
-databases. Backed by a JSON file so state survives across the demo's
-separate ingest/triage/chat/action steps within one run.
+databases. Backed by a JSON file .
 """
 
 import json
