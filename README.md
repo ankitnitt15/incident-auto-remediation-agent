@@ -231,9 +231,10 @@ sequenceDiagram
     end
 
     CmdExec->>Gemini: generate_content(action_extraction_prompt) -> ActionRequest
-    alt action_type == "unrecognized"
-        CmdExec-->>Engineer: None (chat falls through to Q&A; tag comment is left alone)
-    else recognized-action
+    alt Unrecognized action
+        CmdExec-->>Engineer: None - chat falls through to Q&A, tag comment is left alone
+    else Recognized action
+        CmdExec-->>Engineer: Execute recognized action
         CmdExec->>Tools: dispatch(request)
         Tools->>State: get_resource(service) / update_resource(...) / set_feature_flag(...)
         State-->>Tools: before / after state
